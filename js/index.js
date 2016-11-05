@@ -295,14 +295,14 @@ angular.module('saraapp', ['ionic', 'monospaced.elastic', 'angularMoment'])
 
             bot.getUserMessages = function(d) {
 
-                 var endpoint =
-                 'http://www.mocky.io/v2/547cf341501c337f0c9a63fd?callback=JSON_CALLBACK';
-                 return $http.jsonp(endpoint).then(function(response) {
-                 return response.data;
-                 }, function(err) {
-                 console.log('get user messages error, err: ' + JSON.stringify(
-                 err, null, 2));
-                 });
+                var endpoint =
+                    'http://www.mocky.io/v2/547cf341501c337f0c9a63fd?callback=JSON_CALLBACK';
+                return $http.jsonp(endpoint).then(function(response) {
+                    return response.data;
+                }, function(err) {
+                    console.log('get user messages error, err: ' + JSON.stringify(
+                            err, null, 2));
+                });
 
                 var deferred = $q.defer();
 
@@ -587,7 +587,7 @@ angular.module('monospaced.elastic', [])
                             $timeout(function() {
                                 active = false;
                             }, 1);
-
+ 
                         }
                     }
 
