@@ -7,6 +7,11 @@ angular.module('saraapp', ['ionic', 'monospaced.elastic', 'angularMoment'])
                 url: '/',
                 templateUrl: 'templates/UserMessages.html',
                 controller: 'UserMessagesCtrl'
+            })
+            .state('OptionMenu', {
+                url: '/OptionMenu',
+                templateUrl: 'templates/OptionMenu.html',
+                controller: 'UserMessagesCtrl'
             });
 
         $urlRouterProvider.otherwise('/');
@@ -22,7 +27,7 @@ angular.module('saraapp', ['ionic', 'monospaced.elastic', 'angularMoment'])
             // mock acquiring data via $stateParams
             $scope.toUser = {
                 _id: '534b8e5aaa5e7afc1b23e69b',
-                pic: 'img/sara.png',
+                pic: 'css/sara.png',
                 username: 'Sara'
             }
 
