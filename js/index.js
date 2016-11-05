@@ -1,15 +1,15 @@
-angular.module('elastichat', ['ionic', 'monospaced.elastic', 'angularMoment'])
+angular.module('saraapp', ['ionic', 'monospaced.elastic', 'angularMoment'])
 
     .config(function($stateProvider, $urlRouterProvider) {
         $stateProvider
 
             .state('UserMessages', {
-                url: '/UserMessages',
+                url: '/',
                 templateUrl: 'templates/UserMessages.html',
                 controller: 'UserMessagesCtrl'
             });
 
-        $urlRouterProvider.otherwise('/UserMessages');
+        $urlRouterProvider.otherwise('/');
     })
 
     .controller('UserMessagesCtrl', ['$scope', '$rootScope', '$state',
@@ -22,7 +22,7 @@ angular.module('elastichat', ['ionic', 'monospaced.elastic', 'angularMoment'])
             // mock acquiring data via $stateParams
             $scope.toUser = {
                 _id: '534b8e5aaa5e7afc1b23e69b',
-                pic: 'https://files.slack.com/files-pri/T0AS1MFJT-F2YRNJLMA/sara-round-1.png',
+                pic: 'img/sara.png',
                 username: 'Sara'
             }
 
@@ -116,6 +116,7 @@ angular.module('elastichat', ['ionic', 'monospaced.elastic', 'angularMoment'])
                 var message = {text:option.text, bot:false, date: new Date()};
                 keepKeyboardOpen();
                 $scope.messages.push(message);
+                $scope.options = [];
                 BotService.sendMessage($scope.sessionId, message.text).then(function(data) {
                     handleResponse(data);
                     handleOptions(data.quickReplies);
@@ -132,6 +133,9 @@ angular.module('elastichat', ['ionic', 'monospaced.elastic', 'angularMoment'])
             }
 
             $scope.sendMessage = function(sendMessageForm) {
+                if($scope.input.message === ''){
+                    return;
+                }
                 var message = {text:$scope.input.message, bot:false, date: new Date()};
 
                 // if you do a web service call this will be needed as well as before the viewScroll calls
@@ -145,7 +149,7 @@ angular.module('elastichat', ['ionic', 'monospaced.elastic', 'angularMoment'])
                 $scope.messages.push(message);
 
                 BotService.sendMessage($scope.sessionId, message.text).then(function(data) {
-
+                    handleResponse(data);
                     handleOptions(data.quickReplies);
                     $timeout(function() {
                         keepKeyboardOpen();
@@ -170,9 +174,8 @@ angular.module('elastichat', ['ionic', 'monospaced.elastic', 'angularMoment'])
             }
 
             function handleOptions(replies){
-                if(replies[0] === ""){
+                if(!replies || replies.length == 0|| replies[0] === ""){
                     $scope.options = [];
-                    
                     return;
                 }
                 console.log(replies);
@@ -189,7 +192,7 @@ angular.module('elastichat', ['ionic', 'monospaced.elastic', 'angularMoment'])
 
             function handleResponse(data){
                 var message = {text:data.botResponse, bot:true, date: new Date()};
-                if(data.cards.length > 0){
+                if(data.cards && data.cards.length > 0){
                     var card = data.cards[0];
                     var buttons = [];
                     for(var i=0;i<card.buttons.length;i++){

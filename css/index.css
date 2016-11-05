@@ -1,13 +1,13 @@
-body {
-    cursor: url('http://ionicframework.com/img/finger.png'), auto;
-}
-
 /* allows the bar-footer to be elastic /*
 /* optionally set a max-height */
 /* maxlength on the textarea will prevent /*
 /* it from getting too large also */
 .bar-footer {
     overflow: visible !important;
+}
+
+.scroll-content{
+    background: #ecf0f0;
 }
 
 .bar-footer textarea {
@@ -35,11 +35,11 @@ at the bottom as the textarea resizes */
 }
 
 img.profile-pic {
-    width: 40px;
-    height: 40px;
+    width: 80px;
+    height: 80px;
     border-radius: 50%;
     position: absolute;
-    bottom: 10px;
+    top: 5px;
 }
 
 img.profile-pic.left {
@@ -78,47 +78,30 @@ img.profile-pic.right {
 }
 
 .chat-bubble {
-    border-radius: 5px;
     display: inline-block;
     padding: 10px 18px;
     position: relative;
     margin: 10px;
     max-width: 80%;
-}
-
-.chat-bubble:before {
-    content: "\00a0";
-    display: block;
-    height: 16px;
-    width: 9px;
-    position: absolute;
-    bottom: -7.5px;
+    border-radius: 40px 40px 40px 0;
 }
 
 .chat-bubble.left {
-    background-color: #e6e5eb;
+    background-color: #fff;
+    color: #000;
     float: left;
-    margin-left: 55px;
+    margin-left: 95px;
 }
 
-.chat-bubble.left:before {
-    background-color: #e6e5eb;
-    left: 10px;
-    -webkit-transform: rotate(70deg) skew(5deg);
-}
 
 .chat-bubble.right {
     background-color: #158ffe;
     color: #fff;
     float: right;
     margin-right: 15px;
+    border-radius: 40px 40px 0px 40px;
 }
 
-.chat-bubble.right:before {
-    background-color: #158ffe;
-    right: 10px;
-    -webkit-transform: rotate(118deg) skew(-5deg);
-}
 
 .chat-bubble.right a.autolinker {
     color: #fff;
@@ -215,7 +198,7 @@ a.autolinker {
 .options ul li {
     font-family: sans-serif;
     display: inline;
-    background: #158ffe;
+    background: #000;
     margin: 5px;
     padding: 10px;
     border-radius: 10px;
@@ -229,4 +212,9 @@ a.autolinker {
 
 .message-container{
     margin-bottom: 75px;
+}
+
+.bar.bar-positive{
+    border-color: #000;
+ background: #000;
 }
