@@ -30,7 +30,7 @@ angular.module('elastichat', ['ionic', 'monospaced.elastic', 'angularMoment'])
             $scope.user = {
                 _id: '534b8fb2aa5e7afc1b23e69c',
                 pic: 'http://ionicframework.com/img/docs/mcfly.jpg',
-                username: 'Marty'
+                username: 'You'
             };
 
             $scope.input = {
@@ -82,9 +82,9 @@ angular.module('elastichat', ['ionic', 'monospaced.elastic', 'angularMoment'])
                 $scope.sessionId = s;
                 BotService.sendSessionId($scope.sessionId).then(function(data) {
                     $scope.doneLoading = true;
-
-                    var message = {text:data.botResponse, bot:true, date: new Date()};
-                    $scope.messages = [message];
+                    $scope.messages = [];
+                    handleResponse(data);
+                    handleOptions(data.quickReplies);
 
                     $timeout(function() {
                         viewScroll.scrollBottom();
@@ -112,6 +112,25 @@ angular.module('elastichat', ['ionic', 'monospaced.elastic', 'angularMoment'])
                 localStorage['userMessage-' + $scope.toUser._id] = newValue;
             });
 
+            $scope.selectOption = function(option){
+                var message = {text:option.text, bot:false, date: new Date()};
+                keepKeyboardOpen();
+                $scope.messages.push(message);
+                BotService.sendMessage($scope.sessionId, message.text).then(function(data) {
+                    handleResponse(data);
+                    handleOptions(data.quickReplies);
+                    $timeout(function() {
+                        keepKeyboardOpen();
+                        viewScroll.scrollBottom(true);
+
+                    }, 0);
+                });
+                $timeout(function() {
+                    keepKeyboardOpen();
+                    viewScroll.scrollBottom(true);
+                }, 0);
+            }
+
             $scope.sendMessage = function(sendMessageForm) {
                 var message = {text:$scope.input.message, bot:false, date: new Date()};
 
@@ -126,10 +145,11 @@ angular.module('elastichat', ['ionic', 'monospaced.elastic', 'angularMoment'])
                 $scope.messages.push(message);
 
                 BotService.sendMessage($scope.sessionId, message.text).then(function(data) {
-                    var message = {text:data.botResponse, bot:true, date: new Date()};
-                    $scope.messages.push(message);
+
+                    handleOptions(data.quickReplies);
                     $timeout(function() {
-                        viewScroll.scrollBottom();
+                        keepKeyboardOpen();
+                        viewScroll.scrollBottom(true);
                     }, 0);
                 });
 
@@ -139,13 +159,6 @@ angular.module('elastichat', ['ionic', 'monospaced.elastic', 'angularMoment'])
                     viewScroll.scrollBottom(true);
                 }, 0);
 
-                $timeout(function() {
-                    // $scope.messages.push(BotService.getMockMessage());
-                    keepKeyboardOpen();
-                    viewScroll.scrollBottom(true);
-                }, 2000);
-
-                //});
             };
 
             // this keeps the keyboard open on a device only after sending a message, it is non obtrusive
@@ -154,6 +167,37 @@ angular.module('elastichat', ['ionic', 'monospaced.elastic', 'angularMoment'])
                 txtInput.one('blur', function() {
                     txtInput[0].focus();
                 });
+            }
+
+            function handleOptions(replies){
+                if(replies[0] === ""){
+                    $scope.options = [];
+                    
+                    return;
+                }
+                console.log(replies);
+                var options = [];
+                for (var i = 0; i < replies.length; i++) {
+                    if(replies[i].title != ""){
+                        options.push({
+                            text: replies[i].title
+                        });
+                    }
+                }
+                $scope.options = options;
+            }
+
+            function handleResponse(data){
+                var message = {text:data.botResponse, bot:true, date: new Date()};
+                if(data.cards.length > 0){
+                    var card = data.cards[0];
+                    var buttons = [];
+                    for(var i=0;i<card.buttons.length;i++){
+                        buttons.push({target:card.buttons[i].target, text:card.buttons[i].buttonText});
+                    }
+                    message.card = {image:card.cardImage, buttons: buttons};
+                }
+                $scope.messages.push(message);
             }
 
             $scope.onMessageHold = function(e, itemIndex, message) {
@@ -284,6 +328,20 @@ angular.module('elastichat', ['ionic', 'monospaced.elastic', 'angularMoment'])
     ])
 
     // directives
+    .directive('ngEnter', function() {
+        return function (scope, element, attrs) {
+            element.bind("keydown keypress", function (event) {
+                if (event.which === 13) {
+                    scope.$apply(function () {
+                        scope.$eval(attrs.ngEnter, {'event': event});
+                    });
+
+                    event.preventDefault();
+                }
+            });
+        }
+    })
+
     .directive('autolinker', ['$timeout',
         function($timeout) {
             return {
