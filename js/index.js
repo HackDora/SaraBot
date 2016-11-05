@@ -8,9 +8,9 @@ angular.module('saraapp', ['ionic', 'monospaced.elastic', 'angularMoment'])
                 templateUrl: 'templates/UserMessages.html',
                 controller: 'UserMessagesCtrl'
             })
-            .state('OptionMenu', {
-                url: '/OptionMenu',
-                templateUrl: 'templates/OptionMenu.html',
+            .state('OptionsMenu', {
+                url: '/OptionsMenu',
+                templateUrl: 'templates/OptionsMenu.html',
                 controller: 'UserMessagesCtrl'
             });
 
@@ -111,11 +111,11 @@ angular.module('saraapp', ['ionic', 'monospaced.elastic', 'angularMoment'])
                 });
             }
 
-            $scope.$watch('input.message', function(newValue, oldValue) {
-                // console.log('input.message $watch, newValue ' + newValue);
-                if (!newValue) newValue = '';
-                localStorage['userMessage-' + $scope.toUser._id] = newValue;
-            });
+            // $scope.$watch('input.message', function(newValue, oldValue) {
+            //     // console.log('input.message $watch, newValue ' + newValue);
+            //     if (!newValue) newValue = '';
+            //     localStorage['userMessage-' + $scope.toUser._id] = newValue;
+            // });
 
             $scope.selectOption = function(option){
                 var message = {text:option.text, bot:false, date: new Date()};

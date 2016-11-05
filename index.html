@@ -27,13 +27,13 @@
   -->
     <ion-nav-view></ion-nav-view>
     <script id="templates/UserMessages.html" type="text/ng-template">
-    <ion-view id="userMessagesView" cache-view="false" view-title="<div class='msg-header-username'>SARA</div>">
+        <ion-view id="userMessagesView" cache-view="false" view-title="<div class='msg-header-username'>SARA</div>">
             <div class="loader-center" ng-if="!doneLoading">
                 <div class="loader">
                     <i class="icon ion-loading-c"></i>
                 </div>
             </div>
-            <ion-content has-bouncing="true" class="has-header has-footer" delegate-handle="userMessageScroll" ng-style="!options.length && {'margin-bottom':'0'} || {'margin-bottom':'75px'}">
+            <ion-content has-bouncing="true" class="has-header" delegate-handle="userMessageScroll" ng-style="!options.length && {'padding-bottom':'0'} || {'padding-bottom':'75px'}">
                 <div ng-repeat="message in messages" class="message-wrapper" on-hold="onMessageHold($event, $index, message)">
                     <div ng-if="message.bot === true">
                         <img class="profile-pic left" ng-src="{{toUser.pic}}" onerror="onProfilePicError(this)" />
@@ -45,23 +45,12 @@
                                     <a href="{{button.target}}" taget="_blank">{{button.text}}</a>
                                 </div>
                             </div>
-                            <!-- <div class="message-detail">
-                              <span ng-click="viewProfile(message)"
-                                    class="bold">{{toUser.username}}</span>,
-                            <span am-time-ago="message.date"></span>
-                        </div> -->
                         </div>
                     </div>
                     <div ng-if="message.bot === false">
                         <div class="chat-bubble right">
                             <div class="message" ng-bind-html="message.text | nl2br" autolinker>
                             </div>
-                            <!--   <div class="message-detail">
-                              <span ng-click="viewProfile(message)"
-                                    class="bold">{{user.username}}</span>,
-                            <span am-time-ago="message.date"></span>
-                        </div>
- -->
                         </div>
                     </div>
                     <div class="cf"></div>
@@ -81,6 +70,7 @@
                     </li>
                 </ul>
             </div>
+            <div class="optionBtn"><a ng-href="#/OptionsMenu">...</a></div>
             <form name="sendMessageForm" ng-submit="sendMessage(sendMessageForm)" novalidate style="display:none">
                 <ion-footer-bar class="bar-stable item-input-inset message-footer" keyboard-attach>
                     <label class="item-input-wrapper">
@@ -92,6 +82,77 @@
                     </div>
                 </ion-footer-bar>
             </form>
+        </ion-view>
+    </script>
+    <script id="templates/OptionsMenu.html" type="text/ng-template">
+        <ion-view id="optionsView" cache-view="false" view-title="<div class='msg-header-username'>MENU</div>">
+            <ion-content has-bouncing="true" class="has-header" delegate-handle="userMessageScroll">
+                <div class="row">
+                    <div class="col card card-black">
+                    <img ng-src="img/icons/ico-ticket.png">
+                        Ticket
+                    </div>
+                    <div class="col card card-black">
+                    <img ng-src="img/icons/ico-time.png">
+                        Timetable
+                    </div>
+                    <div class="col card card-black">
+                    <img ng-src="img/icons/ico-map.png">
+                        Wayfinder
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col card card-black">
+                    <img ng-src="img/icons/ico-offer.png">
+
+                        My Offers
+                    </div>
+                    <div class="col card card-black">
+                    <img ng-src="img/icons/ico-onboard-meal.png">
+
+                        On Board Service
+                    </div>
+                    <div class="col card card-black">
+                    <img ng-src="img/icons/ico-onboard-entertainment.png">
+                        Entertainment
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col card card-black">
+                    <img ng-src="img/icons/ico-wifi.png">
+                        Connectivity
+                    </div>
+                    <div class="col card card-black">
+                    <img ng-src="img/icons/ico-weather.png">
+
+
+                        Weather
+                    </div>
+                    <div class="col card card-black">
+
+                    <img ng-src="img/icons/ico-attraction.png">
+                        Attractions
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col card card-black">
+                    <img ng-src="img/icons/ico-taxi.png">
+                    Transfer
+                        
+                    </div>
+                    <div class="col card card-black">
+                    <img ng-src="img/icons/ico-hotel.png">
+
+                        Hotel
+                    </div>
+                    <div class="col card card-black">
+                    <img ng-src="img/icons/ico-restaurant.png">
+
+                        Restaurant
+                    </div>
+                    
+                </div>
+            </ion-content>
         </ion-view>
     </script>
 </body>
